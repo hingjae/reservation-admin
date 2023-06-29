@@ -16,12 +16,12 @@
         <table class="table">
             <thead>
             <tr>
-                <th>예약 id</th>
-                <th>메니저 id</th>
-                <th>회원 id</th>
-                <th>예약 날짜</th>
-                <th>예약 시간</th>
-                <th>상태</th>
+                <th><a th:href="@{/(sort='id,desc')}">예약 id</a></th>
+                <th><a th:href="@{/(sort='managerAccount', size=20)}">메니저 id</a></th>
+                <th><a th:href="@{/(sort='userAccount', size=20)}">회원 id</a></th>
+                <th><a th:href="@{/(sort='reservationDate,desc', size=20)}">예약 날짜</a></th>
+                <th><a th:href="@{/(sort='reservationTime,desc', size=20)}">예약 시간</a></th>
+                <th><a th:href="@{/(sort='reservationStatus', size=20)}">상태</a></th>
             </tr>
             </thead>
             <tbody>
