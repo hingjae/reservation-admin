@@ -1,30 +1,87 @@
 package com.honey.reservationadmin.controller;
 
-import com.honey.reservationadmin.dto.ProjectProperties;
-import com.honey.reservationadmin.dto.api.ReservationClientResponse;
+import com.honey.reservationadmin.dto.api.ReservationPageClientResponse;
+import com.honey.reservationadmin.dto.api.TimeBooleanClientResponse;
+import com.honey.reservationadmin.service.ManagerAccountManagementService;
+import com.honey.reservationadmin.service.PaginationService;
 import com.honey.reservationadmin.service.ReservationManagementService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/management/reservations")
 @Controller
 public class ReservationManagementController {
 
     private final ReservationManagementService reservationManagementService;
-    private final ProjectProperties projectProperties;
+    private final ManagerAccountManagementService managerAccountManagementService;
+    private final PaginationService paginationService;
 
     @GetMapping
-    public String  reservations(
+    public String reservations(
             @PageableDefault(size = 20, page = 0) Pageable pageable, ModelMap map
     ) {
-        ReservationClientResponse reservations = reservationManagementService.getReservations(pageable);
+        ReservationPageClientResponse reservations = reservationManagementService.getReservations(pageable);
+        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), reservations.totalPages());
+
         map.addAttribute("reservations", reservations.reservationDtos());
+        map.addAttribute("paginationBarNumbers", barNumbers);
+
         return "management/reservations";
     }
+
+    @GetMapping("/{reservationId}")
+    public String reservation(@PathVariable("reservationId")Long reservationId, ModelMap map) {
+        map.addAttribute("managers", managerAccountManagementService.getManagers());
+        map.addAttribute("reservationId", reservationId);
+        return "management/calendar";
+    }
+
+    @GetMapping("/{reservationId}/date-search")
+    public String reservation(
+            @PathVariable("reservationId") Long reservationId,
+            @RequestParam("managerId") Long managerId,
+            @RequestParam("reservationDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate reservationDate,
+            ModelMap map
+    ) {
+        map.addAttribute("date", reservationDate);
+        map.addAttribute("managerId", managerId);
+        map.addAttribute("timeButtons", reservationManagementService.getAvailableTime(managerId, reservationDate).timeButtons());
+        map.addAttribute("reservationId", reservationId);
+        return "management/reservation-form";
+    }
+
+    @PostMapping("/{reservationId}/date-search")
+    public String updateReservation(
+            @PathVariable("reservationId") Long reservationId,
+            @RequestParam("managerId") Long managerId,
+            int year, int month, int day, String reservationTime
+    ) {
+        reservationManagementService.updateReservation(
+                reservationId, managerId, LocalDate.of(year, month, day),
+                LocalTime.parse(reservationTime, DateTimeFormatter.ofPattern("HH:mm"))
+        );
+        return "redirect:/";
+    }
+
+    @GetMapping("/{reservationId}/delete")
+    public String deleteReservation(
+            @PathVariable("reservationId") Long reservationId
+    ) {
+        reservationManagementService.deleteReservation(reservationId);
+        return "redirect:/";
+    }
+
 }
