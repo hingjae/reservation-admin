@@ -5,7 +5,7 @@ import com.honey.reservationadmin.dto.ReservationDto;
 
 import java.util.List;
 
-public record ReservationClientResponse(
+public record ReservationPageClientResponse(
     @JsonProperty("content") List<ReservationDto> reservationDtos,
     @JsonProperty("pageable") Pageable pageable,
     @JsonProperty("totalPages") int totalPages,
