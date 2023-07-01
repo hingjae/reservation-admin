@@ -1,14 +1,22 @@
 package com.honey.reservationadmin.service;
 
 import com.honey.reservationadmin.dto.ProjectProperties;
-import com.honey.reservationadmin.dto.api.ReservationClientResponse;
+import com.honey.reservationadmin.dto.ReservationDto;
+import com.honey.reservationadmin.dto.api.ReservationPageClientResponse;
+import com.honey.reservationadmin.dto.api.TimeBooleanClientResponse;
+import com.honey.reservationadmin.dto.api.UpdateReservationRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,7 +26,7 @@ public class ReservationManagementService {
     private final RestTemplate restTemplate;
     private final ProjectProperties projectProperties;
 
-    public ReservationClientResponse getReservations(Pageable pageable) {
+    public ReservationPageClientResponse getReservations(Pageable pageable) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/reservations")
                 .queryParam("size", pageable.getPageSize())
                 .queryParam("page", pageable.getPageNumber());
@@ -30,6 +38,46 @@ public class ReservationManagementService {
             }
         }
 
-        return restTemplate.getForObject(uriBuilder.build().toUri(), ReservationClientResponse.class);
+        return restTemplate.getForObject(uriBuilder.build().toUri(), ReservationPageClientResponse.class);
+    }
+
+    public ReservationDto getReservation(Long id) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/reservations/" + id)
+                .build()
+                .toUri();
+
+        return restTemplate.getForObject(uri, ReservationDto.class);
+    }
+
+    public TimeBooleanClientResponse getAvailableTime(Long managerId, LocalDate reservationDate) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/reservations/time-search")
+                .queryParam("managerId", managerId)
+                .queryParam("year", reservationDate.getYear())
+                .queryParam("month", reservationDate.getMonthValue())
+                .queryParam("day", reservationDate.getDayOfMonth())
+                .build()
+                .toUri();
+
+        return restTemplate.getForObject(uri, TimeBooleanClientResponse.class);
+    }
+
+    public void updateReservation(Long reservationId, Long managerId, LocalDate reservationDate, LocalTime reservationTime) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/reservations/" + reservationId)
+                .build()
+                .toUri();
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        UpdateReservationRequest request = UpdateReservationRequest.of(managerId, reservationDate, reservationTime);
+
+        HttpEntity<UpdateReservationRequest> requestEntity = new HttpEntity<>(request, header);
+        ResponseEntity<Void> responseEntity = restTemplate.exchange(uri, HttpMethod.PUT, requestEntity, Void.class);
+    }
+
+    public void deleteReservation(Long reservationId) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/reservations/" + reservationId)
+                .build()
+                .toUri();
+
+        restTemplate.delete(uri);
     }
 }

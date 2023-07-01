@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+<header th:replace="fragments/header :: header">
+    header 템플릿 삽입부
+    <hr>
+</header>
+<main class="w-50 m-auto py-5">
+    <div class="container text-center">
+        <form th:action="@{/management/reservations/{reservationId}/date-search(reservationId=${reservationId})}" id="myForm" method="get">
+            <select name="managerId">
+                <option th:each="manager : ${managers}" th:value="${manager.id}" th:text="${manager.name}"></option>
+            </select>
+            <div class="form-group">
+                <input type="date" class="form-control" name="reservationDate" required>
+            </div>
+            <button type="submit">검색</button>
+        </form>
+    </div>
+</main>
+<footer th:replace="fragments/footer :: footer">
+    <hr>
+    footer 템플릿 삽입부
+</footer>
+<script>
+    function submitForm() {
+        var dateInput = document.getElementById("dateInput").value;
+        var date = new Date(dateInput);
+
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+
+        var selectInput = document.getElementById("selectInput").value;
+
+        // 요청 파라미터에 값 추가
+        var queryParams = new URLSearchParams();
+        queryParams.append("year", year);
+        queryParams.append("month", month);
+        queryParams.append("day", day);
+        queryParams.append("managerId", selectInput);
+
+        // 예시: AJAX를 사용하여 서버로 데이터 전송
+        var xhr = new XMLHttpRequest();
+        var reservationId = extractReservationId(); // URL에서 reservationId 추출
+        var url = "/management/reservations/" + reservationId + "/date-search?" + queryParams.toString();
+        xhr.open("GET", url);
+        xhr.send();
+        console.log(url);
+    }
+
+    function extractReservationId() {
+        var path = window.location.pathname; // 현재 경로의 경로명 추출
+        var parts = path.split("/"); // 경로명을 "/" 기준으로 분리하여 배열로 저장
+        var reservationId = parts[parts.length - 1]; // 배열의 마지막 요소를 reservationId로 추출
+        return reservationId;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+</html>
