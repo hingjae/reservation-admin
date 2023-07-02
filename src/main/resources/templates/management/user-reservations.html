@@ -31,6 +31,7 @@
                     <th class="col-1">요청/문의</th>
                     <th class="col-1"></th>
                     <th class="col-1"></th>
+                    <th class="col-1"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,10 +41,13 @@
                     <td class="col-1" th:text="${reservation.reservationTime()}"></td>
                     <td class="col-1" th:text="${reservation.reservationStatus().description}"></td>
                     <td><a th:href="'/reservations/' + ${reservation.id()} + '/memo'">보기</a></td>
+                    <td><a class="btn btn-primary" th:if="${reservation.reservationStatus.name() == 'READY'}"
+                           th:text="방문 + ' ' +완료"
+                           th:href="@{/management/reservations/{id}/complete(id=${reservation.id})}"></a></td>
                     <td class="col-1">
                         <a th:href="@{/management/reservations/{id}(id=${reservation.id})}">
                             <button class="btn btn-sm btn-success"
-                                    th:if="${reservation.reservationStatus().description == '방문 전'}"
+                                    th:if="${reservation.reservationStatus.name() == 'READY'}"
                                     th:text="예약 +' '+ 변경"></button>
                         </a>
                     </td>

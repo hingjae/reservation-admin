@@ -24,6 +24,7 @@
                 <th><a th:href="@{/(sort='reservationStatus', size=20)}">상태</a></th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +35,7 @@
                 <td th:text="${reservation.reservationDate}"></td>
                 <td th:text="${reservation.reservationTime}"></td>
                 <td th:text="${reservation.reservationStatus.description}"></td>
+                <td><a class="btn btn-primary" th:if="${reservation.reservationStatus.name() == 'READY'}" th:text="방문 + ' ' +완료" th:href="@{/management/reservations/{id}/complete(id=${reservation.id})}"></a></td>
                 <td><a th:href="@{/management/reservations/{id}(id=${reservation.id})}">변경</a></td>
                 <td><a th:href="@{/management/reservations/{id}/delete(id=${reservation.id})}">삭제</a></td>
             </tr>
