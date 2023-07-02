@@ -1,7 +1,6 @@
 package com.honey.reservationadmin.controller;
 
 import com.honey.reservationadmin.dto.api.ReservationPageClientResponse;
-import com.honey.reservationadmin.dto.api.TimeBooleanClientResponse;
 import com.honey.reservationadmin.service.ManagerAccountManagementService;
 import com.honey.reservationadmin.service.PaginationService;
 import com.honey.reservationadmin.service.ReservationManagementService;
@@ -75,7 +74,7 @@ public class ReservationManagementController {
                 reservationId, managerId, LocalDate.of(year, month, day),
                 LocalTime.parse(reservationTime, DateTimeFormatter.ofPattern("HH:mm"))
         );
-        return "redirect:/";
+        return "redirect:/management/search-date?reservationDate="+LocalDate.of(year,month,day);
     }
 
     @GetMapping("/{reservationId}/delete")
