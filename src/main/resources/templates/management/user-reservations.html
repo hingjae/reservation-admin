@@ -36,7 +36,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="reservation : ${reservations}">
-                    <td class="col-1" th:text="${reservation.managerId}"></td>
+                    <td class="col-1" th:text="${reservation.managerName}"></td>
                     <td class="col-1" th:text="${reservation.reservationDate()}"></td>
                     <td class="col-1" th:text="${reservation.reservationTime()}"></td>
                     <td class="col-1" th:text="${reservation.reservationStatus().description}"></td>

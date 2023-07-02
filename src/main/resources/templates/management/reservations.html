@@ -17,8 +17,9 @@
             <thead>
             <tr>
                 <th><a th:href="@{/(sort='id,desc', size=20)}">예약 id</a></th>
-                <th><a th:href="@{/(sort='managerAccount', size=20)}">메니저 id</a></th>
+                <th><a th:href="@{/(sort='managerAccount', size=20)}">담당자</a></th>
                 <th><a th:href="@{/(sort='userAccount', size=20)}">회원 id</a></th>
+                <th><a th:href="@{/(sort='userAccount', size=20)}">회원 이름</a></th>
                 <th><a th:href="@{/(sort='reservationDate,desc', size=20)}">예약 날짜</a></th>
                 <th><a th:href="@{/(sort='reservationTime,desc', size=20)}">예약 시간</a></th>
                 <th><a th:href="@{/(sort='reservationStatus', size=20)}">상태</a></th>
@@ -30,8 +31,9 @@
             <tbody>
             <tr th:each="reservation : ${reservations}">
                 <td th:text="${reservation.id}"></td>
-                <td th:text="${reservation.managerId}"></td>
+                <td th:text="${reservation.managerName}"></td>
                 <td th:text="${reservation.loginId}"></td>
+                <td th:text="${reservation.username}"></td>
                 <td th:text="${reservation.reservationDate}"></td>
                 <td th:text="${reservation.reservationTime}"></td>
                 <td th:text="${reservation.reservationStatus.description}"></td>
