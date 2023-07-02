@@ -55,7 +55,7 @@
                         </form>
                         <a th:href="@{/management/reservations/{id}/delete(id=${reservation.id})}">
                             <button class="btn btn-sm btn-danger"
-                                    th:if="${reservation.reservationStatus().description == '방문 전'}"
+                                    th:if="${reservation.reservationStatus.name() == 'READY'}"
                                     th:text="예약 + ' ' + 취소"></button>
                         </a>
                     </td>
