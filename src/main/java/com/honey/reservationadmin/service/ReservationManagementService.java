@@ -2,7 +2,9 @@ package com.honey.reservationadmin.service;
 
 import com.honey.reservationadmin.dto.ProjectProperties;
 import com.honey.reservationadmin.dto.ReservationDto;
+import com.honey.reservationadmin.dto.ReservationStatus;
 import com.honey.reservationadmin.dto.api.ReservationPageClientResponse;
+import com.honey.reservationadmin.dto.api.ReservationStatusRequest;
 import com.honey.reservationadmin.dto.api.TimeBooleanClientResponse;
 import com.honey.reservationadmin.dto.api.UpdateReservationRequest;
 import lombok.RequiredArgsConstructor;
@@ -73,6 +75,21 @@ public class ReservationManagementService {
         ResponseEntity<Void> responseEntity = restTemplate.exchange(uri, HttpMethod.PUT, requestEntity, Void.class);
     }
 
+    public void updateReservationStatus(Long reservationId) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/reservations/" + reservationId + "/complete")
+                .build()
+                .toUri();
+
+
+        restTemplate.put(uri, ReservationStatusRequest.of(ReservationStatus.COMP));
+//        HttpHeaders header = new HttpHeaders();
+//        header.setContentType(MediaType.APPLICATION_JSON);
+//        ReservationStatusRequest request = ReservationStatusRequest.of(ReservationStatus.COMP);
+//
+//        HttpEntity<ReservationStatusRequest> requestEntity = new HttpEntity<>(request, header);
+//        restTemplate.exchange(uri, HttpMethod.PUT, requestEntity, Void.class);
+    }
+
     public void deleteReservation(Long reservationId) {
         URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/reservations/" + reservationId)
                 .build()
@@ -80,4 +97,6 @@ public class ReservationManagementService {
 
         restTemplate.delete(uri);
     }
+
+
 }

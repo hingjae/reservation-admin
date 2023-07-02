@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -28,6 +29,7 @@ public class ReservationManagementController {
     private final ReservationManagementService reservationManagementService;
     private final ManagerAccountManagementService managerAccountManagementService;
     private final PaginationService paginationService;
+    private final HttpServletRequest request;
 
     @GetMapping
     public String reservations(
@@ -81,7 +83,15 @@ public class ReservationManagementController {
             @PathVariable("reservationId") Long reservationId
     ) {
         reservationManagementService.deleteReservation(reservationId);
-        return "redirect:/";
+        return "redirect:" + request.getHeader("Referer");
+    }
+
+    @GetMapping("/{reservationId}/complete")
+    public String completeReservation(@PathVariable("reservationId")Long reservationId) {
+
+        reservationManagementService.updateReservationStatus(reservationId);
+        String previousUrl = request.getHeader("Referer");
+        return "redirect:" + previousUrl;
     }
 
 }
