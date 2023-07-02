@@ -3,10 +3,7 @@ package com.honey.reservationadmin.service;
 import com.honey.reservationadmin.dto.ProjectProperties;
 import com.honey.reservationadmin.dto.ReservationDto;
 import com.honey.reservationadmin.dto.ReservationStatus;
-import com.honey.reservationadmin.dto.api.ReservationPageClientResponse;
-import com.honey.reservationadmin.dto.api.ReservationStatusRequest;
-import com.honey.reservationadmin.dto.api.TimeBooleanClientResponse;
-import com.honey.reservationadmin.dto.api.UpdateReservationRequest;
+import com.honey.reservationadmin.dto.api.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -80,14 +77,7 @@ public class ReservationManagementService {
                 .build()
                 .toUri();
 
-
         restTemplate.put(uri, ReservationStatusRequest.of(ReservationStatus.COMP));
-//        HttpHeaders header = new HttpHeaders();
-//        header.setContentType(MediaType.APPLICATION_JSON);
-//        ReservationStatusRequest request = ReservationStatusRequest.of(ReservationStatus.COMP);
-//
-//        HttpEntity<ReservationStatusRequest> requestEntity = new HttpEntity<>(request, header);
-//        restTemplate.exchange(uri, HttpMethod.PUT, requestEntity, Void.class);
     }
 
     public void deleteReservation(Long reservationId) {
@@ -99,4 +89,12 @@ public class ReservationManagementService {
     }
 
 
+    public ReservationListClientResponse getReservationByLocalDate(LocalDate reservationDate) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/search-date")
+                .queryParam("reservationDate", reservationDate)
+                .build()
+                .toUri();
+
+        return restTemplate.getForObject(uri, ReservationListClientResponse.class);
+    }
 }
