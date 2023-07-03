@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -24,8 +25,11 @@ public class UserAccountManagementController {
     private final PaginationService paginationService;
 
     @GetMapping
-    public String userAccounts(@PageableDefault(size = 20, page = 0) Pageable pageable, ModelMap map) {
-        UserAccountPageClientResponse userAccounts = userAccountManagementService.getUserAccounts(pageable);
+    public String userAccounts(
+            @PageableDefault(size = 20, page = 0) Pageable pageable, ModelMap map,
+            @RequestParam(name = "searchValue", required = false) String searchValue
+    ) {
+        UserAccountPageClientResponse userAccounts = userAccountManagementService.getUserAccounts(pageable, searchValue);
         List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), userAccounts.totalPages());
 
         map.addAttribute("users", userAccounts.users());
