@@ -1,7 +1,6 @@
 package com.honey.reservationadmin.controller;
 
 import com.honey.reservationadmin.service.ManagerAccountManagementService;
-import com.honey.reservationadmin.service.PaginationService;
 import com.honey.reservationadmin.service.ReservationManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,8 +19,6 @@ import java.time.LocalDate;
 public class SearchDateController {
 
     private final ReservationManagementService reservationManagementService;
-    private final ManagerAccountManagementService managerAccountManagementService;
-    private final HttpServletRequest request;
 
     @GetMapping
     public String getReservation(

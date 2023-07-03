@@ -18,10 +18,11 @@ public class UserAccountManagementService {
     private final RestTemplate restTemplate;
     private final ProjectProperties projectProperties;
 
-    public UserAccountPageClientResponse getUserAccounts(Pageable pageable) {
+    public UserAccountPageClientResponse getUserAccounts(Pageable pageable, String searchValue) {
         URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/userAccounts")
                 .queryParam("size", pageable.getPageSize())
                 .queryParam("page", pageable.getPageNumber())
+                .queryParam("searchValue", searchValue)
                 .build()
                 .toUri();
 
