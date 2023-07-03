@@ -78,16 +78,13 @@ public class ReservationManagementController {
     }
 
     @GetMapping("/{reservationId}/delete")
-    public String deleteReservation(
-            @PathVariable("reservationId") Long reservationId
-    ) {
+    public String deleteReservation(@PathVariable("reservationId") Long reservationId) {
         reservationManagementService.deleteReservation(reservationId);
         return "redirect:" + request.getHeader("Referer");
     }
 
     @GetMapping("/{reservationId}/complete")
     public String completeReservation(@PathVariable("reservationId")Long reservationId) {
-
         reservationManagementService.updateReservationStatus(reservationId);
         String previousUrl = request.getHeader("Referer");
         return "redirect:" + previousUrl;
