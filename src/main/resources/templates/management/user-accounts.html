@@ -3,46 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-  <th:block th:replace="fragments/bootstrap :: head"></th:block>
+    <link href="/css/search-bar.css" rel="stylesheet">
+    <th:block th:replace="fragments/bootstrap :: head"></th:block>
 </head>
 <body>
 <header th:replace="fragments/header :: header">
-  <hr>
+    <hr>
 </header>
 <main class="container">
-  <div class="row">
-    <table class="table">
-      <thead>
-      <tr>
-        <th>회원 id</th>
-        <th>이름</th>
-        <th>전화 번호</th>
-        <th></th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="user : ${users}">
-        <td><a th:text="${user.loginId}" th:href="@{userAccounts/{id}(id=${user.loginId})}"></a></td>
-        <td th:text="${user.name}"></td>
-        <td th:text="${user.phoneNumber}"></td>
-        <td><a th:href="@{/management/userAccounts/{id}/delete(id=${user.loginId})}">삭제</a></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="row">
-    <nav id="pagination" aria-label="Page navigation">
-      <ul class="pagination justify-content-center">
-        <li class="page-item" th:each="pageNumber : ${paginationBarNumbers}">
-          <a class="page-link" th:text="${pageNumber + 1}" th:href="@{/management/userAccounts(page=${pageNumber})}"></a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+
+    <div class="row mt-3">
+        <div class="card card-margin search-form">
+            <div class="card-body p-0">
+                <form id="search-form" th:action="@{/management/userAccounts}" th:method="get">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row no-gutters">
+                                <div class="col-lg-11 col-md-9 col-sm-12 p-0">
+                                    <label for="search-value" hidden>이름 검색</label>
+                                    <input type="text" placeholder="이름 검색..." class="form-control" id="search-value" name="searchValue">
+                                </div>
+                                <div class="col-lg-1 col-md-3 col-sm-12 p-0">
+                                    <button type="submit" class="btn btn-base">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>회원 id</th>
+                <th>이름</th>
+                <th>전화 번호</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td><a th:text="${user.loginId}" th:href="@{userAccounts/{id}(id=${user.loginId})}"></a></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.phoneNumber}"></td>
+                <td><a th:href="@{/management/userAccounts/{id}/delete(id=${user.loginId})}">삭제</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <nav id="pagination" aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:each="pageNumber : ${paginationBarNumbers}">
+                    <a class="page-link" th:text="${pageNumber + 1}"
+                       th:href="@{/management/userAccounts(page=${pageNumber})}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </main>
 <footer th:replace="fragments/footer :: footer">
-  <hr>
+    <hr>
 </footer>
 
 <th:block th:replace="fragments/bootstrap :: body"></th:block>
