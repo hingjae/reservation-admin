@@ -23,4 +23,4 @@ RestTemplate을 통해 미용실 예약 앱과 통신합니다. 전체 예약 �
 ![ERD](https://raw.githubusercontent.com/hingjae/reservation/76fb1278d9c2712c0fc16a35fd3372cf36b8aaf8/document/%08erd.svg)
 
 ### 유즈케이스
-![ERD](https://raw.githubusercontent.com/hingjae/reservation-admin/86681a59cd8e69f1a337d3e0607708b823bb853a/docs/usecase.svg)
+![ERD](https://raw.githubusercontent.com/hingjae/reservation-admin/84950881a14f95cfa13f9e68c58492427e20341d/docs/usecase.svg)
