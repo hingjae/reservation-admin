@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 @RequiredArgsConstructor
 @RequestMapping("/management/search-date")
@@ -23,7 +24,7 @@ public class SearchDateController {
             @RequestParam(value = "reservationDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate reservationDate,
             ModelMap map
     ) {
-        if (reservationDate == null) {reservationDate = LocalDate.now();}
+        if (reservationDate == null) {reservationDate = LocalDate.now(ZoneId.of("Asia/Seoul"));}
 
         map.addAttribute("date", reservationDate);
         map.addAttribute("reservations", reservationManagementService.getReservationByLocalDate(reservationDate).reservationDtos());
