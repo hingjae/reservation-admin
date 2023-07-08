@@ -77,6 +77,12 @@ public class ReservationManagementController {
         return "redirect:/management/search-date?reservationDate="+LocalDate.of(year,month,day);
     }
 
+    @GetMapping("/{reservationId}/memo")
+    public String reservationMemo(@PathVariable("reservationId") Long reservationId, ModelMap map) {
+        map.addAttribute("memo", reservationManagementService.getReservationMemo(reservationId).memo());
+        return "management/memo";
+    }
+
     @GetMapping("/{reservationId}/delete")
     public String deleteReservation(@PathVariable("reservationId") Long reservationId) {
         reservationManagementService.deleteReservation(reservationId);

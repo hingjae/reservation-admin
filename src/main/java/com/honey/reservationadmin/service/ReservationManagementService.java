@@ -97,4 +97,12 @@ public class ReservationManagementService {
 
         return restTemplate.getForObject(uri, ReservationListClientResponse.class);
     }
+
+    public ReservationMemoClientResponse getReservationMemo(Long reservationId) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(projectProperties.reservation().url() + "/api/reservations/" + reservationId + "/memo")
+                .build()
+                .toUri();
+
+        return restTemplate.getForObject(uri, ReservationMemoClientResponse.class);
+    }
 }
