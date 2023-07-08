@@ -5,11 +5,20 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 server.port: 8081
+spring:
+  datasource:
+    url: ${LOCAL_DB_URL}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
+
+project.reservation.url: http://localhost:8080
 ---
 spring:
   config:
     activate:
       on-profile: heroku
+  datasource:
+    url: ${JAWSDB_URL}
   sql:
     init:
       mode: always
