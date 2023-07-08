@@ -40,7 +40,7 @@
                     <td class="col-1" th:text="${reservation.reservationDate()}"></td>
                     <td class="col-1" th:text="${reservation.reservationTime()}"></td>
                     <td class="col-1" th:text="${reservation.reservationStatus().description}"></td>
-                    <td><a th:href="'/reservations/' + ${reservation.id()} + '/memo'">보기</a></td>
+                    <td><a th:href="'/management/reservations/' + ${reservation.id()} + '/memo'">보기</a></td>
                     <td><a class="btn btn-primary" th:if="${reservation.reservationStatus.name() == 'READY'}"
                            th:text="방문 + ' ' +완료"
                            th:href="@{/management/reservations/{id}/complete(id=${reservation.id})}"></a></td>
