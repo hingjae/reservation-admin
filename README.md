@@ -13,8 +13,6 @@ RestTemplate을 통해 미용실 예약 앱과 통신합니다. 전체 예약 �
 
 - 언어 : java 17
 - 프레임워크 : spring boot 2.7
-- DB : mysql
-- DB접근 기술 : jpa
 - 웹 프론트 : thymeleaf, bootstrap
 - 베포 : heroku
 
